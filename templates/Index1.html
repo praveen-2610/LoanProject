@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Eligibility Prediction</title>
+
+<style>
+body {
+    background-color: lightyellow;
+    font-family: Arial, sans-serif;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin: 10px;
+}
+
+.container {
+    background: lightcyan;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 420px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.input-container {
+    position: relative     ;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.history-box {
+    position: absolute;
+    width: 100%;
+    background: #f1f1f1;
+    border-radius: 6px;
+    max-height: 80px;
+    overflow-y: auto;
+    z-index:999;
+    display: none;
+}
+
+.history-item {
+    padding: 6px;
+    cursor: pointer;
+}
+
+.history-item:hover {
+    background: #ddd;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #3498db;
+    color: white;
+    width: 100%;
+}
+
+#historyList {
+    margin-top: 20px;
+}
+
+.record {
+    background: #eee;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Loan Eligibility Prediction</h2>
+
+<form action="/predict" method="post">
+<!-- Dependents -->
+<label>No. of Dependents:</label>
+<div class="input-container">
+<input type="number" id="dependents" name="dependents" placeholder="Eg: 2"
+onkeyup="saveData('dependents')"
+onclick="showHistory('dependents')" required>
+<div class="history-box" id="dependentsHistory"></div>
+</div>
+
+<!-- Education -->
+<label>Education (0 = Not Graduate, 1 = Graduate):</label>
+<div class="input-container">
+<input type="number" id="education" name="education" placeholder="Eg: 1" min="0" max="1"
+onkeyup="saveData('education')"
+onclick="showHistory('education')" required>
+<div class="history-box" id="educationHistory"></div>
+</div>
+
+<!-- Self -->
+<label>Self Employed(0 = No, 1 = Yes):</label>
+<div class="input-container">
+<input type="number" id="self_employed" name="self_employed" placeholder="Eg: 0" min="0" max="1"
+onkeyup="saveData('self_employed')"
+onclick="showHistory('self_employed')" required>
+<div class="history-box" id="self_employedHistory"></div>
+</div>
+
+<!-- Income -->
+<label>Income:</label>
+<div class="input-container">
+<input type="number" id="income_annum" name="income_annum"  placeholder="Eg: 960000"
+onkeyup="saveData('income_annum')"
+onclick="showHistory('income_annum')" required>
+<div class="history-box" id="income_annumHistory"></div>
+</div>
+
+<!-- Loan -->
+<label>Loan Amount:</label>
+<div class="input-container">
+<input type="number" id="loan_amount" name="loan_amount" placeholder="Eg: 7700000"
+onkeyup="saveData('loan_amount')"
+onclick="showHistory('loan_amount')" required>
+<div class="history-box" id="loan_amountHistory"></div>
+</div>
+
+<!-- Term -->
+<label>Loan Term:</label>
+<div class="input-container">
+<input type="number" id="loan_term" name="loan_term" placeholder="Eg: 12"
+onkeyup="saveData('loan_term')"
+onclick="showHistory('loan_term')" required>
+<div class="history-box" id="loan_termHistory"></div>
+</div>
+
+<!-- CIBIL -->
+<label>CIBIL:</label>
+<div class="input-container">
+<input type="number" id="cibil_score" name="cibil_score" placeholder="Eg: 750" min="0" max="900"
+onkeyup="saveData('cibil_score')"
+onclick="showHistory('cibil_score')" required>
+<div class="history-box" id="cibil_scoreHistory"></div>
+</div>
+
+<!-- Assets -->
+<label>Assets:</label>
+<div class="input-container">
+<input type="number" id="assets" name="assets" placeholder="Eg: 5000000"
+onkeyup="saveData('assets')"
+onclick="showHistory('assets')" required>
+<div class="history-box" id="assetsHistory"></div>
+</div>
+
+<button type="submit">Predict Loan Eligibility</button>
+</form>
+
+<!-- Full History -->
+<h3>Previous Applications</h3>
+<div id="historyList"></div>
+
+</div>
+
+<script>
+
+// 🔹 Individual input history
+function saveData(field) {
+    let value = document.getElementById(field).value;
+    if (value === "") return;
+
+    let history = JSON.parse(localStorage.getItem(field)) || [];
+
+    if (!history.includes(value)) {
+        history.unshift(value);
+    }
+
+    localStorage.setItem(field, JSON.stringify(history));
+}
+
+function showHistory(field) {
+    let history = JSON.parse(localStorage.getItem(field)) || [];
+    let box = document.getElementById(field + "History");
+
+    box.innerHTML = "";
+
+    history.forEach(item => {
+        let div = document.createElement("div");
+        div.className = "history-item";
+        div.innerText = item;
+
+        div.onclick = () => {
+            document.getElementById(field).value = item;
+            box.style.display = "none";
+        };
+
+        box.appendChild(div);
+    });
+
+    box.style.display = "block";
+}
+
+// 🔹 Display full history
+function showFormHistory() {
+    let history = JSON.parse(localStorage.getItem("formHistory")) || [];
+    let container = document.getElementById("historyList");
+
+    container.innerHTML = "";
+
+    history.forEach(item => {
+        let div = document.createElement("div");
+        div.className = "record";
+
+        div.innerHTML = `
+        Dep: ${item.dep} | Income: ${item.income} | Loan: ${item.loan} | CIBIL: ${item.cibil}
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+// hide dropdown
+document.addEventListener("click", function(e) {
+    if (!e.target.closest(".input-container")) {
+        document.querySelectorAll(".history-box").forEach(box => {
+            box.style.display = "none";
+        });
+    }
+});
+
+// load history
+showFormHistory();
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

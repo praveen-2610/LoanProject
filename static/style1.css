@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: lightyellow; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 400px;
+  background: lightcyan; 
+  padding: 40px 30px;
+  border-radius: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 32px;
+}
+label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.input-box input {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #e8e8e8;
+  color:aquamarine;
+  font-size: 15px;
+  outline: none;
+}
+button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: #1673b1;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 0.9;
+}
+.signin-text {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
+}
+.signin-text a {
+  color: #1673b1;
+  text-decoration: none;
+  font-weight: 600;
+}
+.sign1{
+  margin-top: 20px;
+  margin-left: 45px;
+}
+input::placeholder
+{
+  width: 100%;
+      padding: 12px;
+      margin-top: 10px;    
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      background: white;
+      
+}
+input{
+  padding:2px;
+  width:360px;
+  height:35px;
+  border:1px solid white;
+  border-radius: 10px;
+  
+}

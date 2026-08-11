@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: lightyellow;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      width: 400px;
+      background: lightcyan;
+      padding: 40px 30px;
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: none;
+      background: white;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1673b1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .sign1 {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .sign1 a {
+      color: #1673b1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="card">
+
+      <h1>Create Account</h1>
+      
+      <!-- ✅ IMPORTANT CHANGE -->
+      <form action="/signup" method="POST">
+
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter username" required>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Create password" required>
+
+        <label>Confirm Password</label>
+        <input type="password" name="confirmPassword" placeholder="Confirm password" required>
+
+        <button type="submit">Create Account</button>
+
+      </form>
+
+      <p class="sign1">
+        Already have an account?
+        <a href="/signin">Sign In</a>
+      </p>
+
+    </div>
+  </div>
+ <script>
+  var msg = "{{ message }}";
+  if (msg && msg.trim() !== "") {
+    alert(msg);
+  }
+</script>
+
+</body>
+</html>
